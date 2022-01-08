@@ -1,0 +1,527 @@
+{
+  "openapi": "3.0.0",
+  "info": {
+    "description": "A simple recipe manager.",
+    "version": "0.2.4",
+    "title": "Recipe Manager",
+    "license": {
+      "name": "MIT",
+      "url": "https://opensource.org/licenses/MIT"
+    },
+    "contact": {
+      "url": "https://github.com/patrickblackjr/recipemanager-api",
+      "name": "Patrick Black",
+      "email": "info@patrickblackjr.com"
+    }
+  },
+  "tags": [
+    {
+      "name": "Category"
+    },
+    {
+      "name": "Ingredient"
+    },
+    {
+      "name": "Recipe"
+    },
+    {
+      "name": "Tag"
+    }
+  ],
+  "paths": {
+    "/recipe/all": {
+      "get": {
+        "summary": "/recipe/all/",
+        "description": "Gets all the recipes in the database.",
+        "responses": {
+          "200": {
+            "description": "OK",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "array",
+                  "items": {
+                    "oneOf": [
+                      {
+                        "$ref": "#/components/schemas/Recipe"
+                      },
+                      {
+                        "$ref": "#/components/schemas/Recipe"
+                      }
+                    ]
+                  }
+                },
+                "examples": {}
+              }
+            }
+          },
+          "404": {
+            "description": "No recipes found.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "string",
+                  "example": "No recipes found."
+                }
+              }
+            }
+          }
+        },
+        "tags": ["Recipe"],
+        "operationId": "getAllRecipes"
+      },
+      "parameters": []
+    },
+    "/recipe": {
+      "post": {
+        "summary": "/recipe",
+        "description": "Creates a new recipe with an auto-generated unique ID, created date, and last updated date.",
+        "parameters": [],
+        "tags": ["Recipe"],
+        "responses": {
+          "200": {
+            "description": "successful operation",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Recipe"
+                }
+              }
+            }
+          }
+        },
+        "operationId": "createRecipe",
+        "requestBody": {
+          "content": {
+            "application/x-www-form-urlencoded": {
+              "schema": {
+                "$ref": "#/components/schemas/Recipe"
+              }
+            }
+          },
+          "description": ""
+        }
+      }
+    },
+    "/recipe/{_id}": {
+      "get": {
+        "summary": "/recipe/{_id}",
+        "tags": ["Recipe"],
+        "responses": {
+          "200": {
+            "description": "OK",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Recipe"
+                },
+                "examples": {}
+              }
+            }
+          }
+        },
+        "operationId": "getRecipe",
+        "description": "Get a single recipe by providing the ID as a path parameter."
+      },
+      "parameters": [
+        {
+          "$ref": "#/components/parameters/_id"
+        }
+      ],
+      "delete": {
+        "summary": "Delete specific recipe by _id",
+        "tags": ["Recipe"],
+        "responses": {
+          "200": {
+            "description": "OK",
+            "headers": {},
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object"
+                },
+                "examples": {
+                  "example-1": {
+                    "value": {}
+                  }
+                }
+              },
+              "application/xml": {
+                "schema": {
+                  "type": "object",
+                  "properties": {}
+                }
+              }
+            }
+          }
+        },
+        "operationId": "deleteRecipe",
+        "parameters": [],
+        "description": "Delete a single recipe by providing the ID as a path parameter."
+      },
+      "put": {
+        "summary": "Update specific recipe by _id",
+        "tags": ["Recipe"],
+        "responses": {
+          "200": {
+            "description": "OK",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Recipe"
+                }
+              }
+            }
+          }
+        },
+        "operationId": "putRecipe",
+        "description": "Update a single recipe by providing the ID as a path parameter."
+      }
+    },
+    "/users": {
+      "get": {
+        "summary": "GET All Users",
+        "tags": ["User"],
+        "responses": {
+          "200": {
+            "description": "OK",
+            "content": {
+              "application/x-www-form-urlencoded": {
+                "schema": {
+                  "type": "array",
+                  "items": {
+                    "allOf": [
+                      {
+                        "$ref": "#/components/schemas/User"
+                      },
+                      {
+                        "$ref": "#/components/schemas/User"
+                      }
+                    ]
+                  }
+                }
+              }
+            }
+          },
+          "401": {
+            "description": "Unauthorized\n",
+            "headers": {}
+          }
+        },
+        "operationId": "get-users",
+        "description": "Assuming appropriate permissions, gets a list of all users.\n\n> You are required to utilize the privileged API key or you will recieve a 401 error.",
+        "security": [
+          {
+            "Privileged API Key": []
+          }
+        ]
+      },
+      "parameters": []
+    },
+    "/tag/{tag}": {
+      "get": {
+        "summary": "View all tags",
+        "tags": ["Tag", "Recipe"],
+        "responses": {
+          "200": {
+            "description": "OK",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Tag"
+                }
+              }
+            }
+          }
+        },
+        "operationId": "getTag",
+        "description": ""
+      },
+      "parameters": [
+        {
+          "name": "tag",
+          "in": "path",
+          "required": true,
+          "schema": {
+            "type": "string"
+          }
+        }
+      ]
+    }
+  },
+  "servers": [
+    {
+      "url": "localhost:3001",
+      "description": "Local Development Server"
+    }
+  ],
+  "components": {
+    "schemas": {
+      "AutoGeneratedItems": {
+        "description": "These are automatically generated parameters that are present in most, if not all records.",
+        "type": "object",
+        "properties": {
+          "_id": {
+            "type": "string",
+            "description": "This parameter is automatically generated.",
+            "example": "61d666bacd2186ed21938742",
+            "readOnly": true
+          },
+          "_createdAt": {
+            "type": "string",
+            "format": "date-time",
+            "description": "This parameter is automatically generated.",
+            "example": "2022-01-06T03:49:14.733Z",
+            "readOnly": true
+          },
+          "_updatedAt": {
+            "type": "string",
+            "format": "date-time",
+            "description": "This parameter is automatically generated.",
+            "example": "2022-01-06T03:49:14.733Z",
+            "readOnly": true
+          }
+        }
+      },
+      "Ingredient": {
+        "allOf": [
+          {
+            "$ref": "#/components/schemas/AutoGeneratedItems"
+          },
+          {
+            "type": "object",
+            "properties": {
+              "title": {
+                "type": "string"
+              },
+              "description": {
+                "type": "string"
+              }
+            },
+            "required": ["title"]
+          }
+        ]
+      },
+      "Recipe": {
+        "allOf": [
+          {
+            "type": "object",
+            "properties": {
+              "title": {
+                "type": "string"
+              },
+              "description": {
+                "type": "string"
+              },
+              "recipeTags": {
+                "type": "array",
+                "uniqueItems": true,
+                "description": "An array with the tags associated with a particular recipe.",
+                "items": {
+                  "$ref": "#/components/schemas/Tag"
+                }
+              },
+              "instructions": {
+                "type": "array",
+                "description": "Instructions for cooking the recipe.",
+                "items": {
+                  "$ref": "#/components/schemas/Ingredient"
+                }
+              },
+              "yield": {
+                "type": "integer",
+                "description": "Number of servings (or people) this recipe with serve with the amounts entered. This number can be used to calculate different yields."
+              },
+              "prepTime": {
+                "type": "integer",
+                "description": "Total prep time in minutes."
+              },
+              "cookTime": {
+                "type": "integer",
+                "description": "Total cook or wait time in minutes."
+              },
+              "totalTime": {
+                "type": "integer",
+                "description": "Total time in minutes. This value is calculated server-side and will be updated when you PUT or update the a specific recipe."
+              },
+              "originUrl": {
+                "type": "string",
+                "description": "The original source of the recipe."
+              }
+            },
+            "required": ["title"]
+          },
+          {
+            "$ref": "#/components/schemas/AutoGeneratedItems"
+          }
+        ],
+        "title": "Recipe",
+        "description": "",
+        "x-internal": false,
+        "x-examples": {
+          "example-1": {
+            "$ref": "#/components/examples/Pot-Roast-Recipe"
+          }
+        }
+      },
+      "Tag": {
+        "allOf": [
+          {
+            "$ref": "#/components/schemas/AutoGeneratedItems"
+          },
+          {
+            "type": "object",
+            "properties": {
+              "title": {
+                "type": "string"
+              },
+              "description": {
+                "type": "string"
+              }
+            }
+          }
+        ]
+      },
+      "Category": {
+        "allOf": [
+          {
+            "$ref": "#/components/schemas/AutoGeneratedItems"
+          },
+          {
+            "type": "object",
+            "properties": {
+              "title": {
+                "type": "string"
+              },
+              "description": {
+                "type": "string"
+              }
+            }
+          }
+        ],
+        "title": "Category"
+      },
+      "User": {
+        "title": "User",
+        "allOf": [
+          {
+            "$ref": "#/components/schemas/AutoGeneratedItems"
+          },
+          {
+            "type": "object",
+            "properties": {
+              "username": {
+                "type": "string"
+              },
+              "password": {
+                "type": "string",
+                "format": "password",
+                "deprecated": true
+              },
+              "name": {
+                "type": "object",
+                "properties": {
+                  "firstName": {
+                    "type": "string"
+                  },
+                  "lastName": {
+                    "type": "string"
+                  }
+                }
+              }
+            }
+          }
+        ]
+      }
+    },
+    "parameters": {
+      "_id": {
+        "name": "_id",
+        "in": "path",
+        "required": true,
+        "schema": {
+          "type": "string",
+          "example": "61d666bacd2186ed21938742"
+        },
+        "description": "The MongoDB-generated ID string."
+      },
+      "tag": {
+        "name": "tag",
+        "in": "path",
+        "required": true,
+        "schema": {
+          "type": "string",
+          "example": "easy"
+        },
+        "description": "This path performs a query lookup using the path parameter to query the database."
+      }
+    },
+    "securitySchemes": {
+      "API Key": {
+        "name": "apiKey",
+        "type": "apiKey",
+        "in": "header"
+      },
+      "Privileged API Key": {
+        "name": "privApiKey",
+        "type": "apiKey",
+        "in": "header",
+        "description": "This is a privileged API key that provides access to admin functions such as user management."
+      }
+    },
+    "responses": {},
+    "examples": {
+      "Pot-Roast-Recipe": {
+        "value": {
+          "title": "Pot Roast",
+          "description": "A simple pot roast recipe.",
+          "recipeTags": [
+            {
+              "_id": "61d666bacd2186ed21938742",
+              "_createdAt": "2022-01-06T03:49:14.733Z",
+              "_updatedAt": "2022-01-06T03:49:14.733Z",
+              "title": "easy",
+              "description": "Optional description"
+            },
+            {
+              "_id": "61d666bacd2186ed21938742",
+              "_createdAt": "2022-01-06T03:49:14.733Z",
+              "_updatedAt": "2022-01-06T03:49:14.733Z",
+              "title": "slow",
+              "description": "Optional description"
+            }
+          ],
+          "instructions": [
+            {
+              "_id": "61d666bacd2186ed21938742",
+              "_createdAt": "2022-01-06T03:49:14.733Z",
+              "_updatedAt": "2022-01-06T03:49:14.733Z",
+              "title": "an optional title",
+              "description": "Here's a long string with all the instructions of the recipes"
+            },
+            {
+              "_id": "61d666bacd2186ed21938742",
+              "_createdAt": "2022-01-06T03:49:14.733Z",
+              "_updatedAt": "2022-01-06T03:49:14.733Z",
+              "title": "an optional title",
+              "description": "This is the final step."
+            }
+          ],
+          "yield": 6,
+          "prepTime": 30,
+          "cookTime": 120,
+          "totalTime": 150,
+          "originUrl": "https://yourmom.com",
+          "_id": "61d666bacd2186ed21938742",
+          "_createdAt": "2022-01-06T03:49:14.733Z",
+          "_updatedAt": "2022-01-06T03:49:14.733Z"
+        }
+      }
+    }
+  },
+  "security": [
+    {
+      "API Key": []
+    }
+  ]
+}
