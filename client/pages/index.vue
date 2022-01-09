@@ -1,20 +1,30 @@
 <template>
   <div>
     <b-container>
-      <RecipeList :key="componentKey" />
+      <div v-if="$apollo.queries.user.loading">Loading...</div>
+      <div v-else>{{ user }}</div>
     </b-container>
   </div>
 </template>
 
 <script>
-// import axios from 'axios'
+import usersGql from '~/apollo/queries/fetchuser.gql'
 
 export default {
   name: 'IndexPage',
   data: () => ({
-    recipes: [],
-    componentKey: 0,
+    apollo: {
+      user: {
+        prefetch: true,
+        query: usersGql,
+        variables() {
+          return { id: 1 }
+        },
+        update(data) {
+          return data.user
+        },
+      },
+    },
   }),
-  fetchOnServer: false,
 }
 </script>

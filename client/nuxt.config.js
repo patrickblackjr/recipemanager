@@ -35,15 +35,30 @@ export default {
     'bootstrap-vue/nuxt',
     // https://go.nuxtjs.dev/axios
     '@nuxtjs/axios',
+    '@nuxtjs/apollo',
     'portal-vue/nuxt',
   ],
   bootstrapVue: {
     // Install the `IconsPlugin` plugin (in addition to `BootstrapVue` plugin)
     icons: true,
   },
-  // Axios module configuration: https://go.nuxtjs.dev/config-axios
+  apollo: {
+    tokenName: 'recipemanager',
+    defaultOptions: {
+      $query: {
+        fetchPolicy: 'network-only',
+        errorPolicy: 'all',
+      },
+    },
+    watchLoading: '@/apollo/loadingHandler.js',
+    errorHandler: '@/apollo/errorHandler.js',
+    clientConfigs: {
+      default: {
+        httpEndpoint: process.env.BASE_URL,
+      },
+    },
+  },
   axios: {
-    // Workaround to avoid enforcing hard-coded localhost:3000: https://github.com/nuxt-community/axios-module/issues/308
     baseURL: '/',
     redirectError: {
       401: '/login',
