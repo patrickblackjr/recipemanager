@@ -36,7 +36,6 @@ export default {
     // https://go.nuxtjs.dev/axios
     '@nuxtjs/axios',
     'portal-vue/nuxt',
-    '@nuxt/http',
   ],
   bootstrapVue: {
     // Install the `IconsPlugin` plugin (in addition to `BootstrapVue` plugin)
@@ -49,7 +48,6 @@ export default {
       404: '/notfound',
     },
   },
-  serverMiddleware: [{ path: '/api', handler: '~/api/index.js' }],
   // Build Configuration: https://go.nuxtjs.dev/config-build
   build: {},
 }
