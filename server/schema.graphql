@@ -5,4 +5,17 @@ type Recipe {
   id: ID!
   title: String!
   description: String
+  createdAt: DateTime!
+}
+
+type User {
+  id: ID!
+  name: String!
+  email: String!
+}
+
+type Ingredient {
+  id: ID!
+  createdAt: DateTime!
+  createdBy: User
 }

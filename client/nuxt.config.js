@@ -35,37 +35,21 @@ export default {
     'bootstrap-vue/nuxt',
     // https://go.nuxtjs.dev/axios
     '@nuxtjs/axios',
-    '@nuxtjs/apollo',
     'portal-vue/nuxt',
+    '@nuxt/http',
   ],
   bootstrapVue: {
     // Install the `IconsPlugin` plugin (in addition to `BootstrapVue` plugin)
     icons: true,
   },
-  apollo: {
-    tokenName: 'recipemanager',
-    defaultOptions: {
-      $query: {
-        fetchPolicy: 'network-only',
-        errorPolicy: 'all',
-      },
-    },
-    watchLoading: '@/apollo/loadingHandler.js',
-    errorHandler: '@/apollo/errorHandler.js',
-    clientConfigs: {
-      default: {
-        httpEndpoint: process.env.BASE_URL,
-      },
-    },
-  },
   axios: {
-    baseURL: '/',
+    baseURL: '/api',
     redirectError: {
       401: '/login',
       404: '/notfound',
     },
   },
-
+  serverMiddleware: [{ path: '/api', handler: '~/api/index.js' }],
   // Build Configuration: https://go.nuxtjs.dev/config-build
   build: {},
 }

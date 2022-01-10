@@ -11,8 +11,21 @@ datasource db {
 }
 
 model Recipe {
-  id Int @id @default(autoincrement())
-  createdAt DateTime @default(now())
-  title String
+  id          String   @id @default(uuid())
+  createdAt   DateTime @default(now())
+  title       String
   description String
+}
+
+model User {
+  id    String  @id @default(uuid())
+  name  String?
+  email String  @unique
+}
+
+model Ingredient {
+  id        String   @id @default(uuid())
+  createdAt DateTime @default(now())
+  // createdBy   User     @relation(fields: [createdById], references: [id])
+  // createdById String
 }
