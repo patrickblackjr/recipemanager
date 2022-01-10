@@ -1,45 +1,30 @@
-import 'dotenv/config'
-import cors from 'cors'
-import express from 'express'
-import { ApolloServer, gql } from 'apollo-server-express'
-const { PrismaClient } = require('@prisma/client')
-const prisma = new PrismaClient()
-const fs = require('fs')
-const path = require('path')
+import { ApolloServer, gql } from 'apollo-server-fastify'
+// import { ApolloServerPluginDrainHttpServer } from 'apollo-server-core'
+import fs from 'fs'
+import Fastify from 'fastify'
+const app = Fastify({
+  logger: true,
+})
+const port = 4000
 
-const app = express()
+const typeDefs = gql(fs.readFileSync('./schema.graphql', { encoding: 'utf8' }))
+const resolvers = require('./resolvers')
 
-// app.use(bodyParser.json())
-// app.use(bodyParser.urlencoded({ extended: true }))
-app.use(cors())
-
-const resolvers = {
-  Query: {
-    recipe: async (obj, args, context, info) => {
-      return context.prisma.recipes.findMany()
-    },
-  },
-}
-
-const server = new ApolloServer({
-  apollo: {
-    key: process.env.APOLLO_KEY,
-  },
-  typeDefs: fs.readFileSync(path.join(__dirname, 'schema.graphql'), 'utf8'),
-  resolvers,
-  context: {
-    prisma,
-  },
+app.get('/', (req, res) => {
+  res.send('Welcome to my graphql api')
 })
 
-const main = async () => {
-  const app = express()
-  await server.start()
-  server.applyMiddleware({ app })
-
-  app.listen({ port: 4000 }, () =>
-    console.log('Now browse to http://localhost:4000' + server.graphqlPath)
-  )
+const start = async () => {
+  try {
+    await app.listen(port)
+    new ApolloServer({
+      typeDefs,
+      resolvers,
+    })
+    app.log.info(`server listening on http://localhost:${port}`)
+  } catch (err) {
+    app.log.error(err)
+    process.exit(1)
+  }
 }
-
-main()
+start()
