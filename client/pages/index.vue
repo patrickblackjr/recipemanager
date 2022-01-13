@@ -22,17 +22,22 @@
           </b-form-group>
           <b-button type="submit" variant="primary">Submit</b-button>
         </b-form>
-        {{ name }}
-        {{ email }}
+        {{ totalPosts }}
       </div>
     </b-container>
   </div>
 </template>
 
 <script>
-// import { prisma } from '@prisma/client'
+import totalPosts from '~/apollo/queries/totalPosts.gql'
 
 export default {
+  apollo: {
+    totalPosts: {
+      prefetch: true,
+      query: totalPosts,
+    },
+  },
   name: 'IndexPage',
   data() {
     return {

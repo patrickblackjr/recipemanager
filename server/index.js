@@ -1,30 +1,35 @@
-import { ApolloServer, gql } from 'apollo-server-fastify'
-// import { ApolloServerPluginDrainHttpServer } from 'apollo-server-core'
-import fs from 'fs'
-import Fastify from 'fastify'
-const app = Fastify({
-  logger: true,
+import { GraphQLModule } from '@graphql-modules/core'
+const { ApolloServer } = require('apollo-server-express')
+const express = require('express')
+require('dotenv').config()
+// import 'graphql-import-node'
+import { graphqlApplication } from './modules/importer'
+
+const { createSchemaForApollo } = graphqlApplication
+const schema = createSchemaForApollo()
+
+const server = new ApolloServer({
+  schema,
+  onError: ({ networkError, graphQLErrors }) => {
+    console.log('graphQLErrors', graphQLErrors)
+    console.log('networkError', networkError)
+  },
 })
-const port = 4000
 
-const typeDefs = gql(fs.readFileSync('./schema.graphql', { encoding: 'utf8' }))
-const resolvers = require('./resolvers')
+//express server
+const app = express()
 
-app.get('/', (req, res) => {
-  res.send('Welcome to my graphql api')
+app.get('/rest', (req, res) => {
+  res.json({
+    data: 'API is working...',
+  })
 })
 
-const start = async () => {
-  try {
-    await app.listen(port)
-    new ApolloServer({
-      typeDefs,
-      resolvers,
-    })
-    app.log.info(`server listening on http://localhost:${port}`)
-  } catch (err) {
-    app.log.error(err)
-    process.exit(1)
-  }
-}
-start()
+server.start().then((res) => {
+  server.applyMiddleware({ app })
+  app.listen({ port: process.env.PORT }, () => {
+    console.log(
+      `🚀 Server is up at http://localhost:${process.env.PORT}${server.graphqlPath}`
+    )
+  })
+})

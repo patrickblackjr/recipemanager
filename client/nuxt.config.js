@@ -1,7 +1,7 @@
 export default {
   // Global page headers: https://go.nuxtjs.dev/config-head
   head: {
-    title: 'recipemanager',
+    title: 'Recipe Manager',
     htmlAttrs: {
       lang: 'en',
     },
@@ -34,18 +34,18 @@ export default {
     // https://go.nuxtjs.dev/bootstrap
     'bootstrap-vue/nuxt',
     // https://go.nuxtjs.dev/axios
-    '@nuxtjs/axios',
     'portal-vue/nuxt',
+    '@nuxtjs/apollo',
   ],
   bootstrapVue: {
     // Install the `IconsPlugin` plugin (in addition to `BootstrapVue` plugin)
     icons: true,
   },
-  axios: {
-    baseURL: '/api',
-    redirectError: {
-      401: '/login',
-      404: '/notfound',
+  apollo: {
+    clientConfigs: {
+      default: {
+        httpEndpoint: 'http://localhost:4001/graphql',
+      },
     },
   },
   // Build Configuration: https://go.nuxtjs.dev/config-build
