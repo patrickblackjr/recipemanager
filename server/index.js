@@ -2,7 +2,6 @@ import { GraphQLModule } from '@graphql-modules/core'
 const { ApolloServer } = require('apollo-server-express')
 const express = require('express')
 require('dotenv').config()
-// import 'graphql-import-node'
 import { graphqlApplication } from './modules/importer'
 
 const { createSchemaForApollo } = graphqlApplication
