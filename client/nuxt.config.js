@@ -13,12 +13,18 @@ export default {
     ],
     link: [{ rel: 'icon', type: 'image/x-icon', href: '/favicon.ico' }],
   },
+  router: {
+    linkExactActiveClass: 'bg-secondary',
+  },
 
   // Global CSS: https://go.nuxtjs.dev/config-css
-  css: [],
+  css: [
+    { src: '~/assets/scss/main.scss', lang: 'scss' },
+    { src: '@fortawesome/fontawesome-svg-core/styles.css', lang: 'css' },
+  ],
 
   // Plugins to run before rendering page: https://go.nuxtjs.dev/config-plugins
-  plugins: [],
+  plugins: ['~/plugins/fontawesome.js'],
 
   // Auto import components: https://go.nuxtjs.dev/config-components
   components: true,
@@ -36,7 +42,6 @@ export default {
     'portal-vue/nuxt',
     '@nuxtjs/apollo',
     '@nuxtjs/auth-next',
-    'bootstrap-vue/nuxt',
   ],
   bootstrapVue: {
     // Install the `IconsPlugin` plugin (in addition to `BootstrapVue` plugin)
