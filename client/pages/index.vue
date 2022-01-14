@@ -1,42 +1,30 @@
 <template>
   <div>
-    <b-container class="my-4">
-      <b-card-group>
-        <div v-for="user in userMany" :key="user._id" class="mx-2">
-          <b-card
-            class="mb-3"
-            :title="user.name"
-            :sub-title="user.email"
-            footer-tag="footer"
-          >
-            <b-card-text>
-              <p>{{ $moment(user.createdAt).format('MM/DD/YYYY hh:mm A') }}</p>
-            </b-card-text>
-            <b-button :to="`profile/${user._id}`">View profile</b-button>
-          </b-card>
-        </div>
-      </b-card-group>
-      <b-form @submit="addUser">
-        <b-form-group label="Email address" label-for="input-1">
-          <b-form-input
-            id="input-1"
+    <div class="container my-4">
+      <form @submit="addUser">
+        <div class="form-floating mb-3">
+          <input
+            id="email"
             v-model="newUser.email"
             type="email"
-            placeholder="Enter email"
-            required
-          ></b-form-input>
-        </b-form-group>
-        <b-form-group label="Name" label-for="input-2">
-          <b-form-input
-            id="input-2"
+            class="form-control"
+            placeholder="name@example.com"
+          />
+          <label for="email">Email address</label>
+        </div>
+        <div class="form-floating mb-3">
+          <input
+            id="name"
             v-model="newUser.name"
-            placeholder="Enter name"
-            required
-          ></b-form-input>
-        </b-form-group>
-        <b-button type="submit" variant="primary" class="mt-2">Submit</b-button>
-      </b-form>
-    </b-container>
+            type="name"
+            class="form-control"
+            placeholder="Name"
+          />
+          <label for="email">Name</label>
+        </div>
+        <button type="submit" class="btn btn-primary mt-2">Submit</button>
+      </form>
+    </div>
   </div>
 </template>
 
@@ -57,7 +45,6 @@ export default {
       }
     `,
   },
-  name: 'IndexPage',
   data() {
     return {
       userMany: null,

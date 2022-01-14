@@ -1,0 +1,10 @@
+query RecipeMany {
+  recipeMany {
+    user
+    title
+    description
+    updatedAt
+    createdAt
+    _id
+  }
+}
