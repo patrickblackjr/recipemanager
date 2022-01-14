@@ -1,34 +1,45 @@
-import { GraphQLModule } from '@graphql-modules/core'
-const { ApolloServer } = require('apollo-server-express')
-const express = require('express')
-require('dotenv').config()
-import { graphqlApplication } from './modules/importer'
+import dotenv from 'dotenv'
+import express from 'express'
+import { ApolloServer } from 'apollo-server-express'
+import { ApolloLogPlugin } from 'apollo-log'
 
-const { createSchemaForApollo } = graphqlApplication
-const schema = createSchemaForApollo()
+const apolloLogOptions = {}
+const plugins = [ApolloLogPlugin(apolloLogOptions)]
+
+import mongoose from 'mongoose'
+
+import './utils/db'
+import schema from './schema'
+
+dotenv.config()
+
+const app = express()
 
 const server = new ApolloServer({
   schema,
-  onError: ({ networkError, graphQLErrors }) => {
-    console.log('graphQLErrors', graphQLErrors)
-    console.log('networkError', networkError)
-  },
-})
-
-//express server
-const app = express()
-
-app.get('/rest', (req, res) => {
-  res.json({
-    data: 'API is working...',
-  })
+  cors: true,
+  introspection: true,
+  tracing: true,
+  plugins,
 })
 
 server.start().then((res) => {
-  server.applyMiddleware({ app })
-  app.listen({ port: process.env.PORT }, () => {
-    console.log(
-      `🚀 Server is up at http://localhost:${process.env.PORT}${server.graphqlPath}`
-    )
+  server.applyMiddleware({
+    app,
+    cors: true,
+    onHealthCheck: () =>
+      // eslint-disable-next-line no-undef
+      new Promise((resolve, reject) => {
+        if (mongoose.connection.readyState > 0) {
+          resolve()
+        } else {
+          reject()
+        }
+      }),
   })
+})
+
+app.listen({ port: process.env.PORT }, () => {
+  console.log(`🚀 Server listening on port ${process.env.PORT}`)
+  console.log(`😷 Health checks available at ${process.env.HEALTH_ENDPOINT}`)
 })

@@ -1,0 +1,8 @@
+query UserById($id: MongoID!) {
+  userById(_id: $id) {
+    name
+    email
+    updatedAt
+    createdAt
+  }
+}
