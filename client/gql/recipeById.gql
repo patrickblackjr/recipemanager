@@ -1,0 +1,10 @@
+query RecipeById($id: MongoID!) {
+  recipeById(_id: $id) {
+    _id
+    title
+    description
+    updatedAt
+    createdAt
+    user
+  }
+}
