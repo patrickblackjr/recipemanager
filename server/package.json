@@ -22,11 +22,9 @@
     "graphql-compose-mongoose": "^9.7.1",
     "graphql-import-node": "^0.0.4",
     "graphql-modules": "^2.0.0",
-    "lodash": "^4.17.21",
     "mongodb": "^4.3.0",
     "mongoose": "^6.1.6",
-    "mongoose-timestamp": "^0.6.0",
-    "winston": "^3.4.0"
+    "mongoose-timestamp": "^0.6.0"
   },
   "devDependencies": {
     "@babel/core": "^7.16.7",
