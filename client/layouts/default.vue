@@ -1,7 +1,7 @@
 <!-- eslint-disable vue/multi-word-component-names -->
 <template>
   <div>
-    <NavbarLoggedIn />
+    <Navbar />
     <nuxt />
   </div>
 </template>

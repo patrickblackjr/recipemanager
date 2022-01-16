@@ -19,12 +19,10 @@
 </template>
 <script>
 import recipeById from '@/gql/recipeById'
-// import userById from '@/gql/userById'
 
 export default {
   data() {
     return {
-      // userId: this.userById,
       id: this.$route.params.id,
     }
   },

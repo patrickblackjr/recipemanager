@@ -1,7 +1,6 @@
 <template>
   <div>
     <header>
-      <NavbarIcons />
       <div class="px-3 py-2 bg-dark text-white">
         <div class="container">
           <div
@@ -51,7 +50,24 @@
           </form>
 
           <div class="text-end">
-            <button type="button" class="btn btn-primary me-2">Login</button>
+            <div class="btn-group">
+              <button type="button" class="btn btn-primary me-2">Login</button>
+              <div class="dropdown">
+                <button
+                  id="dropdownMenuButton1"
+                  class="btn btn-secondary dropdown-toggle"
+                  type="button"
+                  data-bs-toggle="dropdown"
+                  aria-expanded="false"
+                >
+                  Dropdown button
+                </button>
+                <ul class="dropdown-menu" aria-labelledby="dropdownMenuButton1">
+                  <li><a class="dropdown-item" href="#">Action</a></li>
+                  <li><a class="dropdown-item" href="#">Another action</a></li>
+                </ul>
+              </div>
+            </div>
           </div>
         </div>
       </div>

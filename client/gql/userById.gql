@@ -1,9 +1,0 @@
-query UserById($id: MongoID!) {
-  userById(_id: $id) {
-    _id
-    name
-    email
-    updatedAt
-    createdAt
-  }
-}
