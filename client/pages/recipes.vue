@@ -1,6 +1,6 @@
 <template>
   <div class="container">
-    <h1 v-if="$apollo.loading">Loading...</h1>
+    <h1 v-if="$apollo.loading"><Loader /></h1>
     <div v-else class="card-group">
       <div v-for="recipe in recipeMany" :key="recipe._id" class="card">
         <div class="card-body">

@@ -5,6 +5,5 @@ query RecipeById($id: MongoID!) {
     description
     updatedAt
     createdAt
-    user
   }
 }

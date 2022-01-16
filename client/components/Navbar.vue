@@ -18,19 +18,19 @@
             >
               <li>
                 <nuxt-link to="/" class="nav-link text-white rounded">
-                  <font-awesome-icon
+                  <!-- <font-awesome-icon
                     :icon="['fas', 'home']"
                     class="bi d-block mx-auto mb-1 w-100"
-                  />
+                  /> -->
                   Home
                 </nuxt-link>
               </li>
               <li>
                 <nuxt-link to="/recipes" class="nav-link text-white rounded">
-                  <font-awesome-icon
+                  <!-- <font-awesome-icon
                     :icon="['fas', 'book']"
                     class="bi d-block mx-auto mb-1 w-100"
-                  />
+                  /> -->
                   Recipes
                 </nuxt-link>
               </li>
@@ -48,25 +48,25 @@
               aria-label="Search"
             />
           </form>
-
           <div class="text-end">
-            <div class="btn-group">
-              <button type="button" class="btn btn-primary me-2">Login</button>
-              <div class="dropdown">
-                <button
-                  id="dropdownMenuButton1"
-                  class="btn btn-secondary dropdown-toggle"
-                  type="button"
-                  data-bs-toggle="dropdown"
-                  aria-expanded="false"
-                >
-                  Dropdown button
-                </button>
-                <ul class="dropdown-menu" aria-labelledby="dropdownMenuButton1">
-                  <li><a class="dropdown-item" href="#">Action</a></li>
-                  <li><a class="dropdown-item" href="#">Another action</a></li>
-                </ul>
-              </div>
+            <div class="dropdown">
+              <button
+                id="dropdownMenuLink"
+                class="btn btn-primary dropdown-toggle"
+                type="button"
+                data-bs-toggle="dropdown"
+                aria-expanded="false"
+              >
+                <font-awesome-icon :icon="['fas', 'plus']" />
+              </button>
+
+              <ul class="dropdown-menu" aria-labelledby="dropdownMenuLink">
+                <li>
+                  <nuxt-link class="dropdown-item" to="/recipe/new"
+                    >New recipe</nuxt-link
+                  >
+                </li>
+              </ul>
             </div>
           </div>
         </div>
