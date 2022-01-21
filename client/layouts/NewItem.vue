@@ -4,7 +4,6 @@
     <main>
       <Nuxt />
     </main>
-    <RecipeFooter />
   </div>
 </template>
 

@@ -12,7 +12,5 @@
 </template>
 
 <script>
-export default {
-  layout: 'NewItem',
-}
+export default {}
 </script>

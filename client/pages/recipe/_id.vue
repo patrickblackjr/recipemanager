@@ -1,6 +1,45 @@
 <template>
   <div>
     <div class="container">
+      <div
+        v-if="deleteModal"
+        class="modal model-sheet bg-secondary py-5 d-block"
+        style="--bs-bg-opacity: 0.5"
+      >
+        <div class="modal-dialog">
+          <div class="modal-content rounded-6 shadow">
+            <div class="modal-header border-bottom-0">
+              <h5 class="modal-title">Delete "{{ recipeById.title }}"?</h5>
+              <button
+                type="button"
+                class="btn-close"
+                data-bs-dismiss="deleteModal"
+                aria-label="Close"
+                @click="hideDeleteModal"
+              ></button>
+            </div>
+            <div class="modal-body py-0">
+              <p>This cannot be undone.</p>
+            </div>
+            <div class="modal-footer flex-column border-top-0">
+              <button
+                type="button"
+                class="btn btn-danger btn-lg w-100 mx-0 mb-2"
+                @click="deleteRecipe"
+              >
+                Delete
+              </button>
+              <button
+                type="button"
+                class="btn btn-secondary btn-lg w-100 mx-0 mb-2"
+                @click="hideDeleteModal"
+              >
+                Cancel
+              </button>
+            </div>
+          </div>
+        </div>
+      </div>
       <div class="row mb-4">
         <div class="col">
           <nuxt-link class="text-decoration-none" to="/recipes"
@@ -9,141 +48,181 @@
           >
         </div>
       </div>
-      <div class="row">
-        <div class="col">
-          <div>
-            <div class="row">
-              <div class="col">
-                <div class="row">
-                  <div class="col">
-                    <p class="text-muted">ID: {{ recipeById._id }}</p>
+      <div
+        v-show="successfulUpdate"
+        class="alert alert-success alert-dismissible fade show"
+        role="alert"
+      >
+        Updated recipe successfully.
+        <button
+          type="button"
+          class="btn-close"
+          data-bs-dismiss="alert"
+          aria-label="Close"
+        ></button>
+      </div>
+      <div v-if="$apollo.queries.recipeById.loading" class="loading">
+        <Loader />
+      </div>
+      <div v-else class="recipe-edit-form">
+        <div class="row">
+          <div class="col">
+            <div>
+              <div class="row">
+                <div class="col">
+                  <div class="row">
+                    <div class="col">
+                      <p class="text-muted">ID: {{ recipeById._id }}</p>
+                      <p class="text-muted">
+                        Updated
+                        {{ $moment(recipeById.updatedAt).fromNow() }}
+                      </p>
+                      <p class="text-muted">
+                        Created {{ $moment(recipeById.createdAt).fromNow() }}
+                      </p>
+                    </div>
                   </div>
-                  <div class="col">
-                    <p class="text-muted">
-                      Created: {{ recipeById.createdAt }}
-                    </p>
-                  </div>
-                  <div class="col">
-                    <p class="text-muted">
-                      Updated: {{ recipeById.updatedAt }}
-                    </p>
+                  <div class="form-group my-3">
+                    <label class="form-label">Recipe title</label>
+                    <input
+                      v-model="recipeById.title"
+                      type="type"
+                      class="form-control"
+                    />
                   </div>
                 </div>
-                <div class="form-group my-3">
-                  <label class="form-label">Recipe title</label>
-                  <input
-                    v-model="recipeById.title"
-                    type="type"
-                    class="form-control"
-                  />
+              </div>
+              <div class="row">
+                <div class="col">
+                  <div class="form-group my-3">
+                    <label class="form-label">Recipe description</label>
+                    <input
+                      v-model="recipeById.description"
+                      type="type"
+                      class="form-control"
+                    />
+                  </div>
                 </div>
               </div>
-            </div>
-            <div class="row">
-              <div class="col">
-                <div class="form-group my-3">
-                  <label class="form-label">Recipe description</label>
-                  <input
-                    v-model="recipeById.description"
-                    type="type"
-                    class="form-control"
-                  />
+              <div class="row">
+                <div class="col">
+                  <div class="form-group my-3">
+                    <label class="form-label">Prep time</label>
+                    <input type="type" class="form-control" value="Recipe" />
+                    <div class="form-text">in minutes</div>
+                  </div>
                 </div>
-              </div>
-            </div>
-            <div class="row">
-              <div class="col">
-                <div class="form-group my-3">
-                  <label class="form-label">Prep time</label>
-                  <input type="type" class="form-control" value="Recipe" />
-                  <div class="form-text">in minutes</div>
+                <div class="col">
+                  <div class="form-group my-3">
+                    <label class="form-label">Cook time</label>
+                    <input type="type" class="form-control" value="Recipe" />
+                    <div class="form-text">in minutes</div>
+                  </div>
                 </div>
-              </div>
-              <div class="col">
-                <div class="form-group my-3">
-                  <label class="form-label">Cook time</label>
-                  <input type="type" class="form-control" value="Recipe" />
-                  <div class="form-text">in minutes</div>
-                </div>
-              </div>
-              <div class="col">
-                <div class="form-group my-3">
-                  <label class="form-label">Servings</label>
-                  <input type="type" class="form-control" value="Recipe" />
+                <div class="col">
+                  <div class="form-group my-3">
+                    <label class="form-label">Servings</label>
+                    <input type="type" class="form-control" value="Recipe" />
+                  </div>
                 </div>
               </div>
             </div>
           </div>
         </div>
-      </div>
-      <div class="row">
-        <div class="col"><button class="btn btn-success">Create</button></div>
+        <div class="row">
+          <div class="col">
+            <button class="btn btn-success" @click="updateRecipe">
+              Update
+            </button>
+          </div>
+          <div class="col">
+            <button class="btn btn-danger float-end" @click="showDeleteModal">
+              <FontAwesomeIcon :icon="['fas', 'trash']" />
+            </button>
+          </div>
+        </div>
       </div>
     </div>
   </div>
 </template>
 <script>
 import recipeById from '@/gql/recipeById'
-import gql from 'graphql-tag'
+import recipeUpdateById from '@/gql/recipeUpdateById'
+import recipeRemoveById from '@/gql/recipeRemoveById'
 
 export default {
-  layout: 'NewItem',
   data() {
     return {
       id: this.$route.params.id,
-      updatedRecipe: {
-        title: '',
-        description: '',
-      },
+      successfulUpdate: false,
+      deleteModal: false,
     }
   },
   apollo: {
     recipeById: {
-      prefetch: true,
+      prefetch: ({ route }) => ({ id: route.params.id }),
       query: recipeById,
       variables() {
-        return { id: this.$route.params.id }
+        return { id: this.id }
       },
     },
-    methods: {
-      addUser(e) {
-        e.preventDefault()
-        const updatedRecipe = this.updatedRecipe
-        this.$apollo
-          .mutate({
-            mutation: gql`
-              mutation RecipeUpdateById(
-                $id: MongoID!
-                $record: UpdateByIdRecipeInput!
-              ) {
-                recipeUpdateById(_id: $id, record: $record) {
-                  record {
-                    createdAt
-                    updatedAt
-                    _id
-                    description
-                    title
-                  }
-                }
-              }
-            `,
-            variables: {
-              id: this.recipeById._id,
-              UpdateByIdRecipeInput: {
-                name: this.updatedRecipe.title,
-                description: this.updatedRecipe.description,
-              },
+  },
+  methods: {
+    showDeleteModal() {
+      this.deleteModal = true
+    },
+    hideDeleteModal() {
+      this.deleteModal = false
+    },
+    deleteRecipe(e) {
+      e.preventDefault()
+      this.$apollo
+        .mutate({
+          mutation: recipeRemoveById,
+          variables: {
+            id: this.id,
+          },
+        })
+        .then((data) => {
+          console.log(data)
+          this.$router.push('/recipes')
+        })
+        .catch((error) => {
+          console.error(error)
+        })
+    },
+    updateRecipe(e) {
+      e.preventDefault()
+      this.$apollo
+        .mutate({
+          mutation: recipeUpdateById,
+          variables: {
+            id: this.id,
+            record: {
+              title: this.recipeById.title,
+              description: this.recipeById.description,
             },
-          })
-          .then((data) => {
-            console.log(data)
-          })
-          .catch((error) => {
-            console.error(error)
-            this.updatedRecipe = updatedRecipe
-          })
-      },
+          },
+        })
+        .then((data) => {
+          console.log(data)
+          this.successfulUpdate = true
+        })
+        .catch((error) => {
+          console.error(error)
+        })
     },
   },
 }
 </script>
+
+<style lang="css">
+.rounded-6 {
+  border-radius: 1rem;
+}
+
+.modal-sheet .modal-dialog {
+  width: 380px;
+  transition: bottom 0.75s ease-in-out;
+}
+</style>

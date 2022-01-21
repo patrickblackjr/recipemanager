@@ -1,0 +1,11 @@
+mutation recipeUpdateById($id: MongoID!, $record: UpdateByIdRecipeInput!) {
+  recipeUpdateById(_id: $id, record: $record) {
+    record {
+      createdAt
+      updatedAt
+      _id
+      description
+      title
+    }
+  }
+}

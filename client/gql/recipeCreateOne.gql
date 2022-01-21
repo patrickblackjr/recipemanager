@@ -1,0 +1,7 @@
+mutation Mutation($record: CreateOneRecipeInput!) {
+  recipeCreateOne(record: $record) {
+    record {
+      _id
+    }
+  }
+}

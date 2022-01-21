@@ -8,6 +8,14 @@
       "problemMatcher": [],
       "label": "npm: dev - client",
       "detail": "nuxt"
+    },
+    {
+      "type": "npm",
+      "script": "dev",
+      "path": "server/",
+      "problemMatcher": [],
+      "label": "npm: dev - server",
+      "detail": "babel-watch ."
     }
   ]
 }

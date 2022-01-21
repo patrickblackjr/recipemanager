@@ -2,7 +2,13 @@
   <div>
     <div class="form-group my-3">
       <label class="form-label">{{ label }}</label>
-      <input :type="type" class="form-control" :placeholder="placeholder" />
+      <input
+        :value="value"
+        :type="type"
+        class="form-control"
+        :placeholder="placeholder"
+        @input="$emit('input', $event.target.value)"
+      />
       <div v-if="description" class="form-text">{{ description }}</div>
     </div>
   </div>
@@ -25,9 +31,13 @@ export default {
     },
     type: {
       type: String,
-      required: true,
+      required: false,
       default: 'text',
       description: 'Optionally declare a different input type other than text.',
+    },
+    value: {
+      type: String,
+      required: true,
     },
   },
 }

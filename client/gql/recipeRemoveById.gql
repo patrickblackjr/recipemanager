@@ -1,0 +1,8 @@
+mutation RecipeRemoveById($id: MongoID!) {
+  recipeRemoveById(_id: $id) {
+    error {
+      message
+    }
+    recordId
+  }
+}
