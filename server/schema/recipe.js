@@ -1,4 +1,27 @@
 import { Recipe, RecipeTC } from '../models/recipe'
+import { Instruction, InstructionTC } from '../models/instruction'
+
+RecipeTC.addRelation('instructions', {
+  resolver: InstructionTC.getResolver('findMany'),
+  args: {
+    filter: (source) => ({
+      _operators: {
+        _id: {
+          in: source.instructionIds || [],
+        },
+      },
+    }),
+  },
+  projection: { instructionIds: true },
+})
+
+InstructionTC.addRelation('recipe', {
+  resolver: RecipeTC.getResolver('findOne'),
+  args: {
+    _id: (source) => source.recipeId,
+  },
+  projection: { recipeId: true },
+})
 
 const RecipeQuery = {
   recipeById: RecipeTC.getResolver('findById'),

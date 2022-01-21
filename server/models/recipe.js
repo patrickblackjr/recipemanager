@@ -11,6 +11,20 @@ export const RecipeSchema = new Schema(
     description: {
       type: String,
     },
+    prepTime: {
+      type: Number,
+    },
+    cookTime: {
+      type: Number,
+    },
+    servingSize: {
+      type: Number,
+    },
+    instructionIds: {
+      type: Schema.Types.ObjectId,
+      ref: 'Instruction',
+      description: 'A list of instruction MongoDB IDs.',
+    },
   },
   { collection: 'recipes' }
 )

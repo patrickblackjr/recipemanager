@@ -1,6 +1,6 @@
 <template>
   <div>
-    <div class="container">
+    <div class="container mb-4">
       <div
         v-if="deleteModal"
         class="modal model-sheet bg-secondary py-5 d-block"
@@ -78,9 +78,20 @@
                         {{ $moment(recipeById.updatedAt).fromNow() }}
                       </p>
                       <p class="text-muted">
-                        Created {{ $moment(recipeById.createdAt).fromNow() }}
+                        Created
+                        {{ $moment(recipeById.createdAt).fromNow() }}
                       </p>
                     </div>
+                  </div>
+                  <div>
+                    <ol>
+                      <li
+                        v-for="step in recipeById.instructions"
+                        :key="step.stepNumber"
+                      >
+                        {{ step.description }}
+                      </li>
+                    </ol>
                   </div>
                   <div class="form-group my-3">
                     <label class="form-label">Recipe title</label>
@@ -108,22 +119,67 @@
                 <div class="col">
                   <div class="form-group my-3">
                     <label class="form-label">Prep time</label>
-                    <input type="type" class="form-control" value="Recipe" />
+                    <input
+                      v-model="recipeById.prepTime"
+                      type="text"
+                      class="form-control"
+                    />
                     <div class="form-text">in minutes</div>
                   </div>
                 </div>
                 <div class="col">
                   <div class="form-group my-3">
                     <label class="form-label">Cook time</label>
-                    <input type="type" class="form-control" value="Recipe" />
+                    <input
+                      v-model="recipeById.cookTime"
+                      type="type"
+                      class="form-control"
+                    />
                     <div class="form-text">in minutes</div>
                   </div>
                 </div>
                 <div class="col">
                   <div class="form-group my-3">
                     <label class="form-label">Servings</label>
-                    <input type="type" class="form-control" value="Recipe" />
+                    <input
+                      v-model="recipeById.servingSize"
+                      type="type"
+                      class="form-control"
+                    />
                   </div>
+                </div>
+              </div>
+              <div class="row mb-4">
+                <div class="col">
+                  <label class="form-label">Add instruction step</label>
+                  <div class="input-group mb-3">
+                    <input
+                      v-model="recipeById.instructions.description"
+                      type="text"
+                      class="form-control"
+                    />
+                    <button
+                      class="btn btn-success"
+                      type="button"
+                      @click="addIngredient"
+                    >
+                      <font-awesome-icon :icon="['fas', 'fa-plus']" />
+                    </button>
+                  </div>
+                </div>
+              </div>
+              <div
+                v-for="step in recipeById.instructions"
+                :key="step._id"
+                class="row mb-4"
+              >
+                <div class="col">
+                  <label class="form-label">Step #{{ step.stepNumber }}</label>
+                  <input
+                    v-model="step.description"
+                    type="text"
+                    class="form-control"
+                  />
                 </div>
               </div>
             </div>
@@ -149,6 +205,7 @@
 import recipeById from '@/gql/recipeById'
 import recipeUpdateById from '@/gql/recipeUpdateById'
 import recipeRemoveById from '@/gql/recipeRemoveById'
+import recipeUpdateByIdWithInstructions from '@/gql/recipeUpdateByIdWithInstructions'
 
 export default {
   data() {
@@ -201,6 +258,37 @@ export default {
             record: {
               title: this.recipeById.title,
               description: this.recipeById.description,
+              instructions: {
+                title: this.recipeById.instructions.title,
+                description: this.recipeById.instructions.description,
+                stepNumber: this.recipeById.instructions.stepNumber,
+              },
+            },
+          },
+        })
+        .then((data) => {
+          console.log(data)
+          this.successfulUpdate = true
+        })
+        .catch((error) => {
+          console.error(error)
+        })
+    },
+    addIngredient(e) {
+      e.preventDefault()
+      this.$apollo
+        .mutate({
+          mutation: recipeUpdateByIdWithInstructions,
+          variables: {
+            id: this.id,
+            record: {
+              instructions: [
+                {
+                  title: this.recipeById.instructions.title,
+                  description: this.recipeById.instructions.description,
+                  stepNumber: this.recipeById.instructions.stepNumber,
+                },
+              ],
             },
           },
         })

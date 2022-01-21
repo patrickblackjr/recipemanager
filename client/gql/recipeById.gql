@@ -1,9 +1,17 @@
-query RecipeById($id: MongoID!) {
+query recipeById($id: MongoID!) {
   recipeById(_id: $id) {
-    _id
     title
     description
+    cookTime
+    prepTime
+    servingSize
+    instructions {
+      title
+      description
+      stepNumber
+    }
     updatedAt
+    _id
     createdAt
   }
 }
