@@ -2,7 +2,7 @@ import { ApolloServer } from 'apollo-server'
 import { resolvers, typeDefs } from './schema/index'
 import 'dotenv/config'
 
-const port = process.env.PORT
+const port = 4000
 
 new ApolloServer({
   resolvers,
