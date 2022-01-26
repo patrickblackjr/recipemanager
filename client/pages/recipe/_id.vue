@@ -1,5 +1,6 @@
 <template>
-  <div>
+  <div></div>
+  <!-- <div>
     <div class="container mb-4">
       <div
         v-if="deleteModal"
@@ -199,13 +200,13 @@
         </div>
       </div>
     </div>
-  </div>
+  </div> -->
 </template>
 <script>
-import recipeById from '@/gql/recipeById'
-import recipeUpdateById from '@/gql/recipeUpdateById'
-import recipeRemoveById from '@/gql/recipeRemoveById'
-import recipeUpdateByIdWithInstructions from '@/gql/recipeUpdateByIdWithInstructions'
+// import recipeById from '@/gql/recipeById'
+// import recipeUpdateById from '@/gql/recipeUpdateById'
+// import recipeRemoveById from '@/gql/recipeRemoveById'
+// import recipeUpdateByIdWithInstructions from '@/gql/recipeUpdateByIdWithInstructions'
 
 export default {
   data() {
@@ -216,9 +217,10 @@ export default {
     }
   },
   apollo: {
+    skipAll: true,
     recipeById: {
       prefetch: ({ route }) => ({ id: route.params.id }),
-      query: recipeById,
+      // query: recipeById,
       variables() {
         return { id: this.id }
       },
@@ -235,7 +237,7 @@ export default {
       e.preventDefault()
       this.$apollo
         .mutate({
-          mutation: recipeRemoveById,
+          // mutation: recipeRemoveById,
           variables: {
             id: this.id,
           },
@@ -252,7 +254,7 @@ export default {
       e.preventDefault()
       this.$apollo
         .mutate({
-          mutation: recipeUpdateById,
+          // mutation: recipeUpdateById,
           variables: {
             id: this.id,
             record: {
@@ -278,7 +280,7 @@ export default {
       e.preventDefault()
       this.$apollo
         .mutate({
-          mutation: recipeUpdateByIdWithInstructions,
+          // mutation: recipeUpdateByIdWithInstructions,
           variables: {
             id: this.id,
             record: {

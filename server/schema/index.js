@@ -13,7 +13,8 @@ const typeDefs = gql`
     title: String!
     description: String
     published: Boolean!
-    creator: User
+    createdAt: String!
+    updatedAt: String!
   }
   type Query {
     allRecipes: [Recipe!]!
@@ -60,9 +61,9 @@ const resolvers = {
           title: args.title,
           description: args.description,
           published: false,
-          creator: args.creatorEmail && {
-            connect: { id: Number(args.id) },
-          },
+          // creator: args.creatorEmail && {
+          //   connect: { id: Number(args.id) },
+          // },
         },
       })
     },
@@ -98,13 +99,13 @@ const resolvers = {
     },
   },
   Recipe: {
-    creator: (parent, args) => {
-      return prisma.recipe
-        .findUnique({
-          where: { id: parent.id },
-        })
-        .creator()
-    },
+    // creator: (parent, args) => {
+    //   return prisma.recipe
+    //     .findUnique({
+    //       where: { id: parent.id },
+    //     })
+    //     .creator()
+    // },
   },
 }
 

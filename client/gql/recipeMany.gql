@@ -1,9 +1,0 @@
-query RecipeMany {
-  recipeMany {
-    title
-    description
-    updatedAt
-    createdAt
-    _id
-  }
-}

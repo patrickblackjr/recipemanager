@@ -10,5 +10,17 @@ services:
       - postgres:/var/lib/postgresql/data
     ports:
       - '5432:5432'
+  # server:
+  #   build: ./server
+  #   command: npm run dev
+  #   volumes:
+  #     - .:/usr/app/
+  #     - /usr/app/node_modules
+  #   ports:
+  #     - '4000:4000'
+  #   depends_on:
+  #     - postgres
+  #   environment:
+  #     DATABASE_URL: postgresql://recipemanager:recipemanager@localhost:5432/recipemanager?schema=public
 volumes:
   postgres:

@@ -1,0 +1,10 @@
+query AllRecipes {
+  allRecipes {
+    id
+    title
+    description
+    published
+    createdAt
+    updatedAt
+  }
+}

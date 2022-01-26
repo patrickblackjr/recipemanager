@@ -40,7 +40,7 @@
 </template>
 
 <script>
-import recipeCreateOne from '@/gql/recipeCreateOne'
+// import recipeCreateOne from '@/gql/recipeCreateOne'
 
 export default {
   data() {
@@ -58,7 +58,7 @@ export default {
       e.preventDefault()
       this.$apollo
         .mutate({
-          mutation: recipeCreateOne,
+          // mutation: recipeCreateOne,
           variables: {
             record: {
               title: title,
