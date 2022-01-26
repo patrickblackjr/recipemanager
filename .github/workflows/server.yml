@@ -6,14 +6,14 @@ on:
 
 jobs:
   deploy:
-    runs-on: self-hosted
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v2
+      - uses: akhileshns/heroku-deploy@v3.12.12
+        with:
+          heroku_api_key: ${{secrets.HEROKU_API}}
+          heroku_app_name: "pbj-recipemanager-server"
+          heroku_email: "info@patrickblackjr.com"
+          working-directory: ./server
 
-  strategy:
-    matrix:
-      node-version: [16.x]
-
-  steps:
-    - uses: actions/checkout@v2
-    - name: Use Node.js ${{ matrix.node-version }}
-    - run: npm install
-    - run: pm2 restart App
+      
