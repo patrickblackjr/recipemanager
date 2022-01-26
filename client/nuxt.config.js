@@ -1,5 +1,8 @@
 export default {
   // Global page headers: https://go.nuxtjs.dev/config-head
+  bridge: {
+    vite: true,
+  },
   head: {
     title: 'Recipe Manager',
     htmlAttrs: {
