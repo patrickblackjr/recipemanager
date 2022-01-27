@@ -12,14 +12,21 @@ datasource db {
 }
 
 model Recipe {
-  id          Int      @id @default(autoincrement())
-  title       String
-  description String?
-  published   Boolean  @default(false)
-  User        User?    @relation(fields: [userId], references: [id])
-  userId      Int?
-  createdAt   DateTime @default(now())
-  updatedAt   DateTime @default(now()) @updatedAt
+  id           Int           @id @default(autoincrement())
+  title        String
+  description  String?
+  published    Boolean       @default(false)
+  user         User?         @relation(fields: [userId], references: [id])
+  userId       Int?
+  createdAt    DateTime      @default(now())
+  updatedAt    DateTime      @default(now()) @updatedAt
+  instructions Instruction[]
+}
+
+model Instruction {
+  id       Int     @id @default(autoincrement())
+  recipe   Recipe? @relation(fields: [recipeId], references: [id], onDelete: Cascade)
+  recipeId Int?
 }
 
 model User {
