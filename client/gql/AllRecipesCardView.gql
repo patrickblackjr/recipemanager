@@ -1,0 +1,16 @@
+query AllRecipesCardView {
+  allRecipes {
+    id
+    title
+    description
+    prepTime
+    cookTime
+    servings
+    createdAt
+    updatedAt
+    categories {
+      title
+      description
+    }
+  }
+}

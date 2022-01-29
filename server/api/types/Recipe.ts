@@ -1,5 +1,13 @@
-import { objectType, extendType, stringArg, nonNull, intArg } from 'nexus'
+import {
+  objectType,
+  extendType,
+  stringArg,
+  nonNull,
+  intArg,
+  nullable,
+} from 'nexus'
 import { Context } from '../context'
+import { Ingredient } from './Ingredient'
 
 export const Recipe = objectType({
   name: 'Recipe',
@@ -7,33 +15,34 @@ export const Recipe = objectType({
     t.int('id')
     t.string('title')
     t.string('description')
-    t.boolean('published')
+    t.int('prepTime')
+    t.int('cookTime')
+    t.int('servings')
+    t.field('createdAt', { type: 'DateTime' })
+    t.field('updatedAt', { type: 'DateTime' })
+    t.list.field('categories', {
+      type: 'Category',
+    })
   },
 })
 
 export const RecipeQuery = extendType({
   type: 'Query',
   definition(t) {
-    t.nonNull.list.field('drafts', {
+    t.list.field('allRecipes', {
       type: 'Recipe',
       resolve(_root, _args, context: Context) {
-        return context.db.recipe.findMany((r) => r.published === false)
+        return context.db.recipe.findMany()
       },
     })
-    t.list.field('recipes', {
-      type: 'Recipe',
-      resolve(_root, _args, context: Context) {
-        return context.db.recipe.findMany((r) => r.published === true)
-      },
-    })
-    t.nullable.field('recipeById', {
+    t.nonNull.field('recipeById', {
       type: 'Recipe',
       args: {
         id: intArg(),
       },
       resolve: (_parent, args, context: Context) => {
         return context.db.recipe.findUnique({
-          where: { id: args.id || undefined },
+          where: { id: args.id },
         })
       },
     })
@@ -45,14 +54,21 @@ export const RecipeMutation = extendType({
   definition(t) {
     t.nonNull.field('createRecipe', {
       type: 'Recipe',
+      description: `Create a single recipe.`,
       args: {
         title: nonNull(stringArg()),
-        description: nonNull(stringArg()),
+        description: nullable(stringArg()),
+        prepTime: nullable(intArg()),
+        cookTime: nullable(intArg()),
+        servings: nullable(intArg()),
       },
       resolve(_root, args, context: Context) {
         const draft = {
           title: args.title,
-          description: args.description,
+          description: args.description || null,
+          prepTime: args.prepTime || 0,
+          cookTime: args.prepTime || 0,
+          servings: args.servings || 1,
           published: false,
         }
         return context.db.recipe.create({ data: draft })

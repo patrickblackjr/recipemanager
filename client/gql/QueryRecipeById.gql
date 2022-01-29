@@ -1,0 +1,17 @@
+query recipeById($id: Int) {
+  recipeById(id: $id) {
+    id
+    title
+    description
+    prepTime
+    cookTime
+    servings
+    createdAt
+    updatedAt
+    categories {
+      id
+      title
+      description
+    }
+  }
+}

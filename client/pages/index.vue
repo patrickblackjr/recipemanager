@@ -14,13 +14,12 @@
               <div class="row align-items-center">
                 <div class="col">
                   <small class="text-muted"
-                    >Updated
-                    {{ $moment.unix(recipe.updatedAt / 1000).fromNow() }}</small
+                    >Updated {{ $moment(recipe.updatedAt).fromNow() }}</small
                   >
                 </div>
                 <div class="col-4 text-end">
                   <nuxt-link
-                    :to="`/recipe/${recipe.id}`"
+                    :to="`/recipe/${recipe.id}/`"
                     class="btn btn-secondary"
                     >Edit</nuxt-link
                   >
@@ -35,12 +34,12 @@
 </template>
 
 <script>
-import allRecipes from '@/gql/allRecipes.gql'
+import AllRecipesCardView from '@/gql/AllRecipesCardView.gql'
 
 export default {
   apollo: {
     allRecipes: {
-      query: allRecipes,
+      query: AllRecipesCardView,
     },
   },
   filters: {

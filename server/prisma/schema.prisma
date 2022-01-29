@@ -2,8 +2,7 @@
 // learn more about it in the docs: https://pris.ly/d/prisma-schema
 
 generator client {
-  provider      = "prisma-client-js"
-  binaryTargets = ["native"]
+  provider = "prisma-client-js"
 }
 
 datasource db {
@@ -15,7 +14,9 @@ model Recipe {
   id           Int           @id @default(autoincrement())
   title        String
   description  String?
-  published    Boolean       @default(false)
+  prepTime     Int?
+  cookTime     Int?
+  servings     Int?
   user         User?         @relation(fields: [userId], references: [id])
   userId       Int?
   createdAt    DateTime      @default(now())
@@ -27,6 +28,13 @@ model Instruction {
   id       Int     @id @default(autoincrement())
   recipe   Recipe? @relation(fields: [recipeId], references: [id], onDelete: Cascade)
   recipeId Int?
+}
+
+model Ingredient {
+  id          Int     @id @default(autoincrement())
+  title       String
+  description String?
+
 }
 
 model User {
